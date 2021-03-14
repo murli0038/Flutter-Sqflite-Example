@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_app/Constants/Constants.dart';
+import 'package:sqflite_app/Database/DBHelper.dart';
+import 'package:sqflite_app/Models/Products.dart';
 import 'package:sqflite_app/Screens/AddProduct.dart';
 
 class ListOfProduct extends StatefulWidget {
@@ -9,6 +11,22 @@ class ListOfProduct extends StatefulWidget {
 }
 
 class _ListOfProductState extends State<ListOfProduct> {
+
+  DBHelper dbHelper;
+  static Products products;
+  bool isProductsLoad = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      isProductsLoad = true;
+    });
+    dbHelper = DBHelper();
+    getALLProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +54,7 @@ class _ListOfProductState extends State<ListOfProduct> {
         backgroundColor: kPrimaryColor,
         child: Icon(Icons.add,color: kPrimaryLightColor,),
       ),
-      body: Container(
+      body: isProductsLoad ? Center(child: CircularProgressIndicator()) : Container(
           padding: EdgeInsets.all(8.0),
           child: GridOfProduct()
       )
@@ -46,7 +64,7 @@ class _ListOfProductState extends State<ListOfProduct> {
   // ignore: non_constant_identifier_names, missing_return
   Widget GridOfProduct(){
     return GridView.builder(
-      itemCount: 20,
+      itemCount: products.products == null ? 0 : products.products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 4.0,
@@ -59,14 +77,35 @@ class _ListOfProductState extends State<ListOfProduct> {
             color: kPrimaryLightColor,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: IconButton(
-              onPressed: (){},
-              icon: Icon(Icons.delete,color: kPrimaryColor,size: 20,),),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(products.products[index].productName),
+                  Text(products.products[index].productDesc),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: IconButton(
+                  onPressed: (){},
+                  icon: Icon(Icons.delete,color: kPrimaryColor,size: 20,),),
+              ),
+            ],
           ),
         );
       },
     );
+  }
+
+  getALLProducts(){
+    dbHelper.getAllProducts().then((productsFromDatabase){
+      setState(() {
+        products = productsFromDatabase;
+        print(products.products.length);
+        isProductsLoad = false;
+      });
+    });
   }
 }
