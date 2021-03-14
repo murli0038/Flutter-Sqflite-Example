@@ -233,17 +233,17 @@ class _AddProductState extends State<AddProduct> {
   onAddProduct(){
     if(formKey.currentState.validate()){
       if(product.productPic == null || product.productPic == ""){
-        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("You have to select Product Picture for your future reference."));
+        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("You have to select Product Picture for your future reference"));
       }
       else{
         //ADD PRODUCT TO DATABASE
         insertProduct(product);
+        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product saved successfully"));
         Navigator.pop(context);
       }
     }
     else{}
   }
-
 
   //INSERT PRODUCT INTO DATABASE
   insertProduct(Product product){

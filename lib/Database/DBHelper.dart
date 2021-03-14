@@ -65,10 +65,10 @@ class DBHelper{
   }
 
   // METHOD TO DELETE AN ALBUM FROM DATABASE
-  // Future<int> delete(int id) async {
-  //   var dbClient = await db;
-  //   return await dbClient.delete(TABLE, where: '$ID = ?', whereArgs: [id]);
-  // }
+  Future<int> delete(String productName) async {
+    var dbClient = await db;
+    return await dbClient.delete(TABLE, where: '$PRODUCT_NAME = ?', whereArgs: [productName]);
+  }
 
   // METHOD TO UPDATE AN ALBUM FROM DATABASE
   //   Future<int> update(Album album) async {

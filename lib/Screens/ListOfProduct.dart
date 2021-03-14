@@ -133,7 +133,9 @@ class _ListOfProductState extends State<ListOfProduct> {
               Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    deleteProductFromGrid(products.products[index].productName);
+                  },
                   icon: Icon(Icons.delete,color: kPrimaryColor,size: 20,),),
               ),
             ],
@@ -155,6 +157,14 @@ class _ListOfProductState extends State<ListOfProduct> {
 
   deleteAllProduct(){
     dbHelper.truncateTable().then((value){
+      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your all Product(s) are removed"));
+      getALLProducts();
+    });
+  }
+
+  deleteProductFromGrid(String productName){
+    dbHelper.delete(productName).then((value){
+      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product $productName removed"));
       getALLProducts();
     });
   }
