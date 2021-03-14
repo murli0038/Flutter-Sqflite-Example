@@ -62,7 +62,7 @@ class _ListOfProductState extends State<ListOfProduct> {
         backgroundColor: kPrimaryColor,
         child: Icon(Icons.add,color: kPrimaryLightColor,),
       ),
-      body: isProductsLoad ? Center(child: CircularProgressIndicator()) : Container(
+      body: isProductsLoad ? Center(child: CircularProgressIndicator(backgroundColor: kPrimaryColor,)) : Container(
           padding: EdgeInsets.all(8.0),
           child: GridOfProduct()
       )
@@ -87,15 +87,29 @@ class _ListOfProductState extends State<ListOfProduct> {
           ),
           child: Stack(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(products.products[index].productName),
-                  Text(products.products[index].productDesc),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0,left: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(products.products[index].productName,style: TextStyle(color: kPrimaryColor,fontSize: 15,fontWeight: FontWeight.bold),),
+                        SizedBox(width:100,child: Text(products.products[index].productDesc,style: TextStyle(color: Colors.grey,fontSize: 12),)),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4.0,bottom: 4.0),
+                      child: Text("Rs."+products.products[index].price,style: TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold),),
+                    )
+                  ],
+                ),
               ),
               Align(
-                alignment: Alignment.bottomRight,
+                alignment: Alignment.topRight,
                 child: IconButton(
                   onPressed: (){},
                   icon: Icon(Icons.delete,color: kPrimaryColor,size: 20,),),
