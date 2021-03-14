@@ -40,6 +40,14 @@ class _ListOfProductState extends State<ListOfProduct> {
               color: Colors.white
           ),
         ),
+        actions: [
+          IconButton(icon: Icon(Icons.refresh_sharp), onPressed: (){
+            setState(() {
+              isProductsLoad = true;
+              getALLProducts();
+            });
+          })
+        ],
         elevation: 0,
         centerTitle: true,
         backgroundColor: kPrimaryColor,

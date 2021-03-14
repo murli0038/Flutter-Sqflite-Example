@@ -238,7 +238,7 @@ class _AddProductState extends State<AddProduct> {
       else{
         //ADD PRODUCT TO DATABASE
         insertProduct(product);
-
+        Navigator.pop(context);
       }
     }
     else{}
