@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_app/Constants/Constants.dart';
@@ -105,6 +107,11 @@ class _ListOfProductState extends State<ListOfProduct> {
         return Container(
           decoration: BoxDecoration(
             color: kPrimaryLightColor,
+            image: DecorationImage(
+              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1), BlendMode.dstATop),
+              image: MemoryImage(products.products[index].productPic,),
+              fit: BoxFit.cover
+            ),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(
@@ -119,8 +126,8 @@ class _ListOfProductState extends State<ListOfProduct> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(products.products[index].productName,style: TextStyle(color: kPrimaryColor,fontSize: 15,fontWeight: FontWeight.bold),),
-                        SizedBox(width:100,child: Text(products.products[index].productDesc,style: TextStyle(color: Colors.grey,fontSize: 12),)),
+                        SizedBox(width:100,child: Text(products.products[index].productName,style: TextStyle(color: kPrimaryColor,fontSize: 15,fontWeight: FontWeight.bold),)),
+                        SizedBox(width:100,child: Text(products.products[index].productDesc,style: TextStyle(color: Colors.black,fontSize: 12),)),
                       ],
                     ),
                     Padding(
@@ -132,11 +139,14 @@ class _ListOfProductState extends State<ListOfProduct> {
               ),
               Align(
                 alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: (){
-                    deleteProductFromGrid(products.products[index].productName);
-                  },
-                  icon: Icon(Icons.delete,color: kPrimaryColor,size: 20,),),
+                child: CircleAvatar(
+                  backgroundColor: kPrimaryLightColor,
+                  child: IconButton(
+                    onPressed: (){
+                      deleteProductFromGrid(products.products[index].productName);
+                    },
+                    icon: Icon(Icons.delete,color: kPrimaryColor,size: 20,),),
+                ),
               ),
             ],
           ),

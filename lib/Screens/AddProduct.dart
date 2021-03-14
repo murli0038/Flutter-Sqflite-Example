@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -218,12 +219,16 @@ class _AddProductState extends State<AddProduct> {
     return items;
   }
 
+  Uint8List bytes;
+
   _imgFromGallery() async {
     try {
-      final pickedFile = await ImagePicker.platform.pickImage(source: ImageSource.gallery,);
+      final pickedFile = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
       setState(() {
+        bytes = null;
         _image = pickedFile;
-        product.productPic = _image.path;
+        bytes = File(_image.path).readAsBytesSync();
+        product.productPic = bytes;
       });
     } catch (e) {
       print(e.toString());
@@ -232,7 +237,7 @@ class _AddProductState extends State<AddProduct> {
 
   onAddProduct(){
     if(formKey.currentState.validate()){
-      if(product.productPic == null || product.productPic == ""){
+      if(product.productPic == null){
         ScaffoldMessenger.of(context).showSnackBar(showSnackBar("You have to select Product Picture for your future reference"));
       }
       else{

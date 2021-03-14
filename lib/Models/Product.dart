@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 class Product{
 
   Product();
@@ -8,7 +10,7 @@ class Product{
   String categoryName;
   String productDesc;
   String price;
-  String productPic;
+  Uint8List productPic;
 
   factory Product.fromMap(Map<String, dynamic> map){
     return Product()
@@ -17,7 +19,7 @@ class Product{
         ..categoryName = map['categoryName'] as String
         ..productDesc = map['productDesc'] as String
         ..price = map['price'] as String
-        ..productPic = map['productPic'] as String;
+        ..productPic = map['productPic'] as Uint8List;
   }
 
   Map<String, dynamic> toMap(Product instance) => <String, dynamic> {

@@ -38,7 +38,7 @@ class DBHelper{
   _onCreate(Database db, int version) async
   {
     //CREATE THE DATABASE TABLE
-    await db.execute("CREATE TABLE $TABLE ($PRODUCT_NAME TEXT, $CATEGORY_NAME TEXT, $PRODUCT_DESCRIPTION TEXT, $PRICE TEXT, $PRODUCT_PIC TEXT)");
+    await db.execute("CREATE TABLE $TABLE ($PRODUCT_NAME TEXT, $CATEGORY_NAME TEXT, $PRODUCT_DESCRIPTION TEXT, $PRICE TEXT, $PRODUCT_PIC BLOB)");
   }
 
   Future<Product> save(Product product) async {
