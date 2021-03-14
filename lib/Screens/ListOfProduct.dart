@@ -131,7 +131,7 @@ class _ListOfProductState extends State<ListOfProduct> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(width:100,child: Text(products.products[index].productName,style: TextStyle(color: kPrimaryColor,fontSize: 15,fontWeight: FontWeight.bold),)),
-                        SizedBox(width:100,child: Text(products.products[index].productDesc,style: TextStyle(color: Colors.black,fontSize: 12),)),
+                        SizedBox(width:100,height: 30,child: Text(products.products[index].productDesc,style: TextStyle(color: Colors.black,fontSize: 12),)),
                       ],
                     ),
                     Padding(
