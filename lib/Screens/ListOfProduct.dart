@@ -108,7 +108,7 @@ class _ListOfProductState extends State<ListOfProduct> {
           decoration: BoxDecoration(
             color: kPrimaryLightColor,
             image: DecorationImage(
-              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1), BlendMode.dstATop),
+              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
               image: MemoryImage(products.products[index].productPic,),
               fit: BoxFit.cover
             ),
