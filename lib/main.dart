@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite_app/Constants/Constants.dart';
 import 'package:sqflite_app/Screens/ListOfProduct.dart';
+import 'package:sqflite_app/Screens/SplashScreen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ListOfProduct(),
+      home: SplashScreen(),
       theme: ThemeData(
         accentColor: kPrimaryLightColor
       ),

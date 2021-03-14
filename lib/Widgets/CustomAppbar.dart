@@ -10,9 +10,9 @@ class CustomAppBar {
       automaticallyImplyLeading: false,
       title: Text(title,
         style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             fontSize: 20,
-            fontFamily: "Popmed",
+            fontFamily: "FredokaOne",
             color: Colors.white
         ),),
       elevation: 0,

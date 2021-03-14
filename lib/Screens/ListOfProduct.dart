@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sqflite_app/Constants/Constants.dart';
 import 'package:sqflite_app/Database/DBHelper.dart';
 import 'package:sqflite_app/Models/Products.dart';
@@ -31,65 +32,68 @@ class _ListOfProductState extends State<ListOfProduct> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Wish-List",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize:25,
-              fontFamily: "Popmed",
-              color: Colors.white
+    return WillPopScope(
+      onWillPop: (){return SystemNavigator.pop(animated: false);},
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text("Wish-List",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize:25,
+                fontFamily: "FredokaOne",
+                color: Colors.white
+            ),
           ),
-        ),
-        actions: [
-          IconButton(icon: Icon(Icons.refresh_sharp), onPressed: (){
-            setState(() {
-              isProductsLoad = true;
-              getALLProducts();
-            });
-          }),
-        ],
-        leading: IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
+          actions: [
+            IconButton(icon: Icon(Icons.refresh_sharp), onPressed: (){
               setState(() {
-                setState(() {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor: kPrimaryColor,
-                      content: Text(
-                        "Are you sure to Delete Database??",
-                        style: TextStyle(
-                            color: kPrimaryLightColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      action: SnackBarAction(
-                        label: "Delete",
-                        onPressed: () {
-                          isProductsLoad = true;
-                          deleteAllProduct();},
-                      )));
-                });
+                isProductsLoad = true;
+                getALLProducts();
               });
             }),
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: kPrimaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(10),
+          ],
+          leading: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                setState(() {
+                  setState(() {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: kPrimaryColor,
+                        content: Text(
+                          "Are you sure to Delete Database??",
+                          style: TextStyle(
+                              color: kPrimaryLightColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        action: SnackBarAction(
+                          label: "Delete",
+                          onPressed: () {
+                            isProductsLoad = true;
+                            deleteAllProduct();},
+                        )));
+                  });
+                });
+              }),
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: kPrimaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10),
+            ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));},
+          backgroundColor: kPrimaryColor,
+          child: Icon(Icons.add,color: kPrimaryLightColor,),
+        ),
+        body: isProductsLoad ? Center(child: CircularProgressIndicator(backgroundColor: kPrimaryColor,)) : Container(
+            padding: EdgeInsets.all(8.0),
+            child: GridOfProduct()
+        )
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));},
-        backgroundColor: kPrimaryColor,
-        child: Icon(Icons.add,color: kPrimaryLightColor,),
-      ),
-      body: isProductsLoad ? Center(child: CircularProgressIndicator(backgroundColor: kPrimaryColor,)) : Container(
-          padding: EdgeInsets.all(8.0),
-          child: GridOfProduct()
-      )
     );
   }
 
