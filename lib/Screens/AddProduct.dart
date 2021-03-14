@@ -223,7 +223,7 @@ class _AddProductState extends State<AddProduct> {
 
   _imgFromGallery() async {
     try {
-      final pickedFile = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker.platform.pickImage(source: ImageSource.gallery,imageQuality: 100);
       setState(() {
         bytes = null;
         _image = pickedFile;
