@@ -46,8 +46,30 @@ class _ListOfProductState extends State<ListOfProduct> {
               isProductsLoad = true;
               getALLProducts();
             });
-          })
+          }),
         ],
+        leading: IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                setState(() {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: kPrimaryColor,
+                      content: Text(
+                        "Are you sure to Delete Database??",
+                        style: TextStyle(
+                            color: kPrimaryLightColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      action: SnackBarAction(
+                        label: "Delete",
+                        onPressed: () {
+                          isProductsLoad = true;
+                          deleteAllProduct();},
+                      )));
+                });
+              });
+            }),
         elevation: 0,
         centerTitle: true,
         backgroundColor: kPrimaryColor,
@@ -128,6 +150,12 @@ class _ListOfProductState extends State<ListOfProduct> {
         print(products.products.length);
         isProductsLoad = false;
       });
+    });
+  }
+
+  deleteAllProduct(){
+    dbHelper.truncateTable().then((value){
+      getALLProducts();
     });
   }
 }

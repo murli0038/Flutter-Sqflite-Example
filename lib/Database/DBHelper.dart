@@ -76,13 +76,13 @@ class DBHelper{
   //     return await dbClient
   //         .update(TABLE, album.toJson(album), where: '$ID = ?', whereArgs: [album.id]);
   //   }
-  //
-  //   // METHOD TO TRUNCATE THE TABLE
-  //   Future<void> truncateTable() async {
-  //     var dbClient = await db;
-  //     return await dbClient.delete(TABLE);
-  //   }
-  //
+
+    // METHOD TO TRUNCATE THE TABLE
+    Future<void> truncateTable() async {
+      var dbClient = await db;
+      return await dbClient.delete(TABLE);
+    }
+
     // METHOD TO CLOSE THE DATABASE
     Future close() async {
       var dbClient = await db;
