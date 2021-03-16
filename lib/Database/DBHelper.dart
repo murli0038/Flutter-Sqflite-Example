@@ -30,6 +30,7 @@ class DBHelper{
   {
     // GET THE DEVICE'S DOCUMENT DIRECTORY TO STORE DATA TO OFFLINE DATABASE
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    print(documentsDirectory.path);
     String path = join(documentsDirectory.path, DB_NAME);
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
