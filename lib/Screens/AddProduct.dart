@@ -46,29 +46,29 @@ class _AddProductState extends State<AddProduct> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           // physics: BouncingScrollPhysics(),
           children: [
-            // SizedBox(height: 10,),
-            // FieldLabel("Product ID :"),
-            // TextFieldContainer(
-            //   child: TextFormField(
-            //     validator: (value) {
-            //       if (value.isEmpty) {
-            //         return "Please enter Product ID";
-            //       }
-            //       return null;
-            //     },
-            //     onChanged: (value) {
-            //       // product.id = int.parse(value);
-            //     },
-            //     keyboardType: TextInputType.number,
-            //     autocorrect: false,
-            //     cursorColor: Color(0xFF6F35A5),
-            //     decoration: InputDecoration(
-            //       errorStyle: TextStyle(color: Colors.red),
-            //       hintText: 'Enter Product ID',
-            //       border: InputBorder.none,
-            //     ),
-            //   ),
-            // ),
+            SizedBox(height: 10,),
+            FieldLabel("Product ID :"),
+            TextFieldContainer(
+              child: TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Please enter Product ID";
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  product.productId = value;
+                },
+                keyboardType: TextInputType.number,
+                autocorrect: false,
+                cursorColor: Color(0xFF6F35A5),
+                decoration: InputDecoration(
+                  errorStyle: TextStyle(color: Colors.red),
+                  hintText: 'Enter Product ID',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
             SizedBox(height: 10,),
             FieldLabel("Product name :"),
             TextFieldContainer(

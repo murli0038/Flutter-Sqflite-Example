@@ -5,7 +5,7 @@ class Product{
   Product();
 
   // static String table = 'products';
-  // int id;
+  String productId;
   String productName;
   String categoryName;
   String productDesc;
@@ -14,7 +14,7 @@ class Product{
 
   factory Product.fromMap(Map<String, dynamic> map){
     return Product()
-        // ..id = map['id'] as int
+        ..productId = map['productId'] as String
         ..productName = map['productName'] as String
         ..categoryName = map['categoryName'] as String
         ..productDesc = map['productDesc'] as String
@@ -23,7 +23,7 @@ class Product{
   }
 
   Map<String, dynamic> toMap(Product instance) => <String, dynamic> {
-    // "id" : instance.id,
+    "productId" : instance.productId,
     "productName" : instance.productName,
     "categoryName" : instance.categoryName,
     "productDesc" : instance.productDesc,

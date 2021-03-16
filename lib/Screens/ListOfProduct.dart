@@ -14,12 +14,13 @@ class ListOfProduct extends StatefulWidget {
   _ListOfProductState createState() => _ListOfProductState();
 }
 
-class _ListOfProductState extends State<ListOfProduct> {
+class _ListOfProductState extends State<ListOfProduct> with SingleTickerProviderStateMixin {
 
   DBHelper dbHelper;
   static Products products;
-  bool isProductsLoad = false;
-
+  bool isProductsLoad = true;
+  bool isPlaying = false;
+  AnimationController _animationController;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   void _onRefresh() async{
@@ -41,6 +42,7 @@ class _ListOfProductState extends State<ListOfProduct> {
     });
     dbHelper = DBHelper();
     getALLProducts();
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 450));
   }
 
   @override
@@ -59,6 +61,19 @@ class _ListOfProductState extends State<ListOfProduct> {
             ),
           ),
           automaticallyImplyLeading: false,
+          leading: IconButton(
+            splashColor: kPrimaryLightColor,
+            icon: AnimatedIcon(
+            icon: AnimatedIcons.menu_close,
+            progress: _animationController,
+          ),
+          onPressed: () {
+            setState(() {
+              isPlaying = !isPlaying;
+              isPlaying ? _animationController.forward() : _animationController.reverse();
+            });
+          },
+        ),
           actions: [
             IconButton(
                 icon: Icon(Icons.delete),
@@ -156,15 +171,33 @@ class _ListOfProductState extends State<ListOfProduct> {
                     ],
                   ),
                 ),
-                Align(
+                if(isPlaying) Align(
                   alignment: Alignment.topRight,
-                  child: CircleAvatar(
-                    backgroundColor: kPrimaryLightColor,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: (){
+                        deleteProductFromGrid(productId: products.products[index].productId,productName: products.products[index].productName);
+                      },
+                      icon: Icon(Icons.delete,color: kPrimaryLightColor,size: 20,),),
+                  ),
+                ),
+                if(isPlaying) Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
                     child: IconButton(
                       onPressed: (){
-                        deleteProductFromGrid(products.products[index].productName);
+                        // deleteProductFromGrid(products.products[index].productName);
                       },
-                      icon: Icon(Icons.delete,color: kPrimaryColor,size: 20,),),
+                      icon: Icon(Icons.edit,color: kPrimaryLightColor,size: 20,),),
                   ),
                 ),
               ],
@@ -192,8 +225,8 @@ class _ListOfProductState extends State<ListOfProduct> {
     });
   }
 
-  deleteProductFromGrid(String productName){
-    dbHelper.delete(productName).then((value){
+  deleteProductFromGrid({@required String productName, @required productId}){
+    dbHelper.delete(productId).then((value){
       ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product $productName removed"));
       getALLProducts();
     });

@@ -9,7 +9,7 @@ import 'package:sqflite_app/Models/Products.dart';
 class DBHelper{
   static Database _db;
   static const String TABLE = "products";
-  // static const String ID = "id";
+  static const String PRODUCT_ID = "productId";
   static const String PRODUCT_NAME = "productName";
   static const String CATEGORY_NAME = "categoryName";
   static const String PRODUCT_DESCRIPTION = "productDesc";
@@ -39,7 +39,7 @@ class DBHelper{
   _onCreate(Database db, int version) async
   {
     //CREATE THE DATABASE TABLE
-    await db.execute("CREATE TABLE $TABLE ($PRODUCT_NAME TEXT, $CATEGORY_NAME TEXT, $PRODUCT_DESCRIPTION TEXT, $PRICE TEXT, $PRODUCT_PIC BLOB)");
+    await db.execute("CREATE TABLE $TABLE ($PRODUCT_ID TEXT,$PRODUCT_NAME TEXT, $CATEGORY_NAME TEXT, $PRODUCT_DESCRIPTION TEXT, $PRICE TEXT, $PRODUCT_PIC BLOB)");
   }
 
   Future<Product> save(Product product) async {
@@ -53,7 +53,7 @@ class DBHelper{
   Future<Products> getAllProducts() async {
     var dbClient = await db;
     // SPECIFY THE COLUMN NAMES YOU WANT IN THR RESULT SET
-    List<Map> maps = await dbClient.query(TABLE, columns: [PRODUCT_NAME,CATEGORY_NAME,PRODUCT_DESCRIPTION,PRICE,PRODUCT_PIC]);
+    List<Map> maps = await dbClient.query(TABLE, columns: [PRODUCT_ID,PRODUCT_NAME,CATEGORY_NAME,PRODUCT_DESCRIPTION,PRICE,PRODUCT_PIC]);
     Products allProducts = Products();
     List<Product> products = [];
     if (maps.length > 0) {
@@ -66,9 +66,9 @@ class DBHelper{
   }
 
   // METHOD TO DELETE AN ALBUM FROM DATABASE
-  Future<int> delete(String productName) async {
+  Future<int> delete(String productId) async {
     var dbClient = await db;
-    return await dbClient.delete(TABLE, where: '$PRODUCT_NAME = ?', whereArgs: [productName]);
+    return await dbClient.delete(TABLE, where: '$PRODUCT_ID = ?', whereArgs: [productId]);
   }
 
   // METHOD TO UPDATE AN ALBUM FROM DATABASE
