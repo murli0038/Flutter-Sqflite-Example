@@ -235,16 +235,23 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 
-  onAddProduct(){
+  onAddProduct() async {
     if(formKey.currentState.validate()){
       if(product.productPic == null){
         ScaffoldMessenger.of(context).showSnackBar(showSnackBar("You have to select Product Picture for your future reference"));
       }
       else{
-        //ADD PRODUCT TO DATABASE
-        insertProduct(product);
-        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product saved successfully"));
-        Navigator.pop(context);
+        //CHECK THE PRODUCT ID IS UNIQUE OR NOT
+        List ids = await dbHelper.getAllProductID();
+        if(ids.contains(product.productId)){
+          ScaffoldMessenger.of(context).showSnackBar(showSnackBar("This Product ID already exist"));
+        }
+        else{
+          //ADD PRODUCT TO DATABASE
+          insertProduct(product);
+          ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product saved successfully"));
+          Navigator.pop(context);
+        }
       }
     }
     else{}

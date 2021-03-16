@@ -23,6 +23,7 @@ class DBHelper{
       return _db;
     }
     _db = await initDB();
+    getAllProductID();
     return _db;
   }
 
@@ -88,6 +89,20 @@ class DBHelper{
     Future close() async {
       var dbClient = await db;
       dbClient.close();
+    }
+
+
+    //METHOD FOR RETRIVE THE ALL PRODUCT ID FROM DATABASE
+    // ignore: missing_return
+    Future<List> getAllProductID() async
+    {
+      var dbClient = await db;
+      List<Map> maps = await dbClient.query(TABLE, columns: [PRODUCT_ID]);
+      List ids = [];
+      maps.forEach((element) {
+        ids.add(element['productId']);
+      });
+      return ids;
     }
 
 }
