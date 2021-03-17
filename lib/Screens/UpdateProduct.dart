@@ -11,36 +11,60 @@ import 'package:sqflite_app/Widgets/CustomAppbar.dart';
 import 'package:sqflite_app/Widgets/TextFieldContainer.dart';
 import 'package:sqflite_app/Widgets/staticFieldlabel.dart';
 
-class AddProduct extends StatefulWidget {
+class UpdateProduct extends StatefulWidget {
+
+  Product product;
+  UpdateProduct({this.product});
+
   @override
-  _AddProductState createState() => _AddProductState();
+  _UpdateProductState createState() => _UpdateProductState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _UpdateProductState extends State<UpdateProduct> {
 
   String currentCategory;
   List<DropdownMenuItem<String>> dropDownCategoryItems;
   List categoryList = ["1st Category","2nd Category","3rd Category","4th Category","5th Category","6th Category",];
   PickedFile _image;
-  Product product;
-  DBHelper dbHelper;
   Uint8List bytes;
+  DBHelper dbHelper;
+
+
+  List<DropdownMenuItem<String>> getDropDownMenuRegionItems() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String category in categoryList) {
+      items.add(new DropdownMenuItem(
+          value: category,
+          child: new Text(category, style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontFamily: "Popmed",)))
+      );
+    }
+    return items;
+  }
+
+  void changedDropDownRegionItem(String selectedRegion) {
+    setState(() {
+      currentCategory = selectedRegion;
+      widget.product.categoryName = selectedRegion;
+    });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    dbHelper = DBHelper();
-    product = Product();
     dropDownCategoryItems = getDropDownMenuRegionItems();
+    currentCategory = widget.product.categoryName;
+    dbHelper = DBHelper();
+    setState(() {
+      _image = null;
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: CustomAppBar.getNavigationAppBar(title: "Add Product", context: context, color: kPrimaryColor, onPressed: (){Navigator.pop(context);}),
+      appBar: CustomAppBar.getNavigationAppBar(title: "Update Product", context: context, color: kPrimaryColor, onPressed: (){Navigator.pop(context);}),
       body: Form(
         key: formKey,
         child: ListView(
@@ -50,6 +74,7 @@ class _AddProductState extends State<AddProduct> {
             FieldLabel("Product ID :"),
             TextFieldContainer(
               child: TextFormField(
+                initialValue: widget.product.productId,
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Please enter Product ID";
@@ -57,7 +82,7 @@ class _AddProductState extends State<AddProduct> {
                   return null;
                 },
                 onChanged: (value) {
-                  product.productId = value;
+                  widget.product.productId = value;
                 },
                 keyboardType: TextInputType.number,
                 autocorrect: false,
@@ -73,6 +98,7 @@ class _AddProductState extends State<AddProduct> {
             FieldLabel("Product name :"),
             TextFieldContainer(
               child: TextFormField(
+                initialValue: widget.product.productName,
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Please enter Product name";
@@ -80,7 +106,7 @@ class _AddProductState extends State<AddProduct> {
                   return null;
                 },
                 onChanged: (value) {
-                  product.productName = value;
+                  widget.product.productName = value;
                 },
                 keyboardType: TextInputType.text,
                 autocorrect: false,
@@ -98,6 +124,7 @@ class _AddProductState extends State<AddProduct> {
               height: 140,
               child: TextFieldContainer(
                 child: TextFormField(
+                  initialValue: widget.product.productDesc,
                   validator: (value) {
                     if (value.isEmpty) {
                       return "Please enter Product Description";
@@ -106,7 +133,7 @@ class _AddProductState extends State<AddProduct> {
                   },
                   maxLines: null,
                   onChanged: (value) {
-                    product.productDesc = value;
+                    widget.product.productDesc = value;
                   },
                   keyboardType: TextInputType.multiline,
                   autocorrect: false,
@@ -123,6 +150,7 @@ class _AddProductState extends State<AddProduct> {
             FieldLabel("Product price :"),
             TextFieldContainer(
               child: TextFormField(
+                initialValue: widget.product.price,
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Please enter Product Price";
@@ -130,7 +158,7 @@ class _AddProductState extends State<AddProduct> {
                   return null;
                 },
                 onChanged: (value) {
-                  product.price = value;
+                  widget.product.price = value;
                 },
                 keyboardType: TextInputType.number,
                 autocorrect: false,
@@ -168,11 +196,7 @@ class _AddProductState extends State<AddProduct> {
                 child: TextFieldContainer(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: _image == null ? Icon(
-                      Icons.add_a_photo_rounded,
-                      size: 100,
-                      color: kPrimaryColor,
-                    ) : Container(child:  Image.file(File(_image.path),)),
+                    child: _image == null ? Container(child: Image.memory(widget.product.productPic),) : Container(child: Image.file(File(_image.path),)),
                   ),
                 ),
               ),
@@ -186,10 +210,10 @@ class _AddProductState extends State<AddProduct> {
                   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),topLeft: Radius.circular(30)),
                 ),
                 child: TextButton(
-                  onPressed: onAddProduct,
+                  onPressed: onUpdateProduct,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: Text("Save Product",style: TextStyle(color: kPrimaryLightColor,fontSize: 16),),
+                    child: Text("Update Product",style: TextStyle(color: kPrimaryLightColor,fontSize: 16),),
                   ),
                 ),
               ),
@@ -201,24 +225,6 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  void changedDropDownRegionItem(String selectedRegion) {
-    setState(() {
-      currentCategory = selectedRegion;
-      product.categoryName = selectedRegion;
-    });
-  }
-
-  List<DropdownMenuItem<String>> getDropDownMenuRegionItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String category in categoryList) {
-      items.add(new DropdownMenuItem(
-          value: category,
-          child: new Text(category, style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontFamily: "Popmed",)))
-      );
-    }
-    return items;
-  }
-
   _imgFromGallery() async {
     try {
       final pickedFile = await ImagePicker.platform.pickImage(source: ImageSource.gallery,imageQuality: 100);
@@ -226,41 +232,49 @@ class _AddProductState extends State<AddProduct> {
         bytes = null;
         _image = pickedFile;
         bytes = File(_image.path).readAsBytesSync();
-        product.productPic = bytes;
+        widget.product.productPic = bytes;
       });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  onAddProduct() async {
+  //BUTTON ION TAP FOR UPDATE
+  onUpdateProduct() async {
     if(formKey.currentState.validate()){
-      if(product.productPic == null){
+      if(widget.product.productPic == null){
         ScaffoldMessenger.of(context).showSnackBar(showSnackBar("You have to select Product Picture for your future reference"));
       }
       else{
-        //CHECK THE PRODUCT ID IS UNIQUE OR NOT
-        List ids = await dbHelper.getAllProductID();
-        if(ids.contains(product.productId)){
-          ScaffoldMessenger.of(context).showSnackBar(showSnackBar("This Product ID already exist"));
+
+        if(widget.product.productId == widget.product.productId){
+          //ADD PRODUCT TO DATABASE
+          updateProduct(widget.product);
+          ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product updated successfully"));
+          Navigator.pop(context);
         }
         else{
-          //ADD PRODUCT TO DATABASE
-          insertProduct(product);
-          ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product saved successfully"));
-          Navigator.pop(context);
+          //CHECK THE PRODUCT ID IS UNIQUE OR NOT
+          List ids = await dbHelper.getAllProductID();
+          if(ids.contains(widget.product.productId)){
+            ScaffoldMessenger.of(context).showSnackBar(showSnackBar("This Product ID already exist"));
+          }
+          else{
+            //ADD PRODUCT TO DATABASE
+            updateProduct(widget.product);
+            ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Your Product updated successfully"));
+            Navigator.pop(context);
+          }
         }
       }
     }
     else{}
   }
 
-  //INSERT PRODUCT INTO DATABASE
-  insertProduct(Product product){
-    dbHelper.save(product).then((value){
+  //UPDATE AND INSERT PRODUCT INTO DATABASE
+  updateProduct(Product product){
+    dbHelper.update(product).then((value){
       print(value);
     });
   }
-
-
 }

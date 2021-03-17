@@ -73,11 +73,18 @@ class DBHelper{
   }
 
   // METHOD TO UPDATE AN ALBUM FROM DATABASE
-  //   Future<int> update(Album album) async {
-  //     var dbClient = await db;
-  //     return await dbClient
-  //         .update(TABLE, album.toJson(album), where: '$ID = ?', whereArgs: [album.id]);
-  //   }
+    Future<int> update(Product product) async {
+      var dbClient = await db;
+      var result = await dbClient.update(
+          TABLE, product.toMap(product), where: "$PRODUCT_ID = ?", whereArgs: [product.productId]
+      );
+      print("Result : "+result.toString());
+      return result;
+      // var xyz = await dbClient.update(TABLE, product.toMap(product));
+      // var abc = await dbClient.rawUpdate('UPDATE $TABLE SET $PRODUCT_NAME = ?, $CATEGORY_NAME = ?,$PRODUCT_DESCRIPTION = ?, $PRICE = ?,$PRODUCT_PIC = ? WHERE $PRODUCT_ID = ${product.productId}',[product.productName,product.categoryName,product.productDesc,product.price,product.productPic]);
+      // var xyz = await dbClient.update(TABLE, product.toMap(product), where: '$PRODUCT_ID = ${product.productId}',whereArgs: [product.productId,product.productName,product.categoryName,product.productDesc,product.price,product.productPic]);
+
+    }
 
     // METHOD TO TRUNCATE THE TABLE
     Future<void> truncateTable() async {
