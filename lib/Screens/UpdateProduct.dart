@@ -74,6 +74,7 @@ class _UpdateProductState extends State<UpdateProduct> {
             FieldLabel("Product ID :"),
             TextFieldContainer(
               child: TextFormField(
+                enabled: false,
                 initialValue: widget.product.productId,
                 validator: (value) {
                   if (value.isEmpty) {
