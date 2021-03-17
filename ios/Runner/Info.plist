@@ -39,7 +39,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Access camera...</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Acess Photos...</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Acess Photos...</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Access media...</string>
 </dict>
 </plist>
