@@ -146,72 +146,77 @@ class _ListOfProductState extends State<ListOfProduct> with SingleTickerProvider
         ),
         itemBuilder: (BuildContext context, int index)
         {
-          return GestureDetector(
-            onTap: (){print(products.products[index].productId);},
-            child: Container(
-              decoration: BoxDecoration(
-                color: kPrimaryLightColor,
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                  image: MemoryImage(products.products[index].productPic,),
-                  fit: BoxFit.cover
-                ),
-                borderRadius: BorderRadius.circular(10),
+          return Container(
+            decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              image: DecorationImage(
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                image: MemoryImage(products.products[index].productPic,),
+                fit: BoxFit.cover
               ),
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0,left: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(width:100,child: Text(products.products[index].productName,style: TextStyle(color: kPrimaryColor,fontSize: 15,fontWeight: FontWeight.bold),)),
-                            SizedBox(width:100,height: 30,child: Text(products.products[index].productDesc,style: TextStyle(color: Colors.black,fontSize: 12),)),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4.0,bottom: 4.0),
-                          child: Text("Rs."+products.products[index].price,style: TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold),),
-                        )
-                      ],
-                    ),
-                  ),
-                  if(isPlaying) Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kPrimaryColor,
-                          borderRadius: BorderRadius.circular(10)
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4.0,left: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(width:100,child: Text(products.products[index].productName,style: TextStyle(color: kPrimaryColor,fontSize: 15,fontWeight: FontWeight.bold),)),
+                          SizedBox(width:100,height: 30,child: Text(products.products[index].productDesc,style: TextStyle(color: Colors.black,fontSize: 12),)),
+                        ],
                       ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: (){
-                          deleteProductFromGrid(productId: products.products[index].productId,productName: products.products[index].productName);
-                        },
-                        icon: Icon(Icons.delete,color: kPrimaryLightColor,size: 20,),),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4.0,bottom: 4.0),
+                        child: Text("Rs."+products.products[index].price,style: TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold),),
+                      )
+                    ],
                   ),
-                  if(isPlaying) Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      decoration: BoxDecoration(
+                ),
+                if(isPlaying) Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    decoration: BoxDecoration(
                         color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: IconButton(
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateProduct(product: products.products[index],)));
-                        },
-                        icon: Icon(Icons.edit,color: kPrimaryLightColor,size: 20,),),
                     ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: (){
+                        deleteProductFromGrid(productId: products.products[index].productId,productName: products.products[index].productName);
+                        setState(() {
+                          isPlaying = false;
+                          _animationController.reverse();
+                        });
+                      },
+                      icon: Icon(Icons.delete,color: kPrimaryLightColor,size: 20,),),
                   ),
-                ],
-              ),
+                ),
+                if(isPlaying) Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: IconButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateProduct(product: products.products[index],)));
+                        setState(() {
+                          isPlaying = false;
+                          _animationController.reverse();
+                        });
+                      },
+                      icon: Icon(Icons.edit,color: kPrimaryLightColor,size: 20,),),
+                  ),
+                ),
+              ],
             ),
           );
         },
